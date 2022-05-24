@@ -36,7 +36,7 @@ template<typename T> void read_val(T& v){
 
 
 template<typename T>
-std::ostream& operator<<(ostream& os, vector<T>& v){
+ostream& operator<<(ostream& os, vector<T>& v){
     os << "{ ";
     for (int i = 0; i<v.size(); ++i) {
         os << v[i];
@@ -48,15 +48,27 @@ std::ostream& operator<<(ostream& os, vector<T>& v){
 } //cout << vec1 << vec2 << vec3
 
 template<typename T>
-istream& operator>>(istream& is, vector<T>& v){
-	char ch = 0;
-	is >> ch;
-	if( ch != '{'){
-		is.unget();
-		return is;
-	}
-	
+
+
+istream& operator>>(istream& is, vector<T>& v)
+{
+    char ch = 0;
+    is >> ch;
+    if (ch != '{') {
+        is.unget();
+        return is;
+    }
+
+    for (T val; is >> val; ) {
+        v.push_back(val);
+        is >> ch;
+        if (ch != ',') break;
+    }
+
+    return is;
 }
+	
+
 
 int main(){
 
@@ -108,9 +120,6 @@ int main(){
 	
 	cout << "S<vector<int>> svec: " << svec.get() << endl;
 	
-	/* nem muködik 
-	vector<int> vec;
-	read_val(vec);
-	S<vector<int>> svec{vec}; */
+	
 
 }
